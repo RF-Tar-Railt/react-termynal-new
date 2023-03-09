@@ -1,5 +1,4 @@
 import React from 'react';
-import { ReactNode } from "react"
 
 type DataLineProps = {
   type?: string;
@@ -28,8 +27,7 @@ type DataLineData = {
 
 
 
-
-class DataLine extends React.Component {
+export class DataLine extends React.Component {
   public visibility: "visible" | "hidden";
   public data: DataLineData;
 
@@ -74,5 +72,3 @@ class DataLine extends React.Component {
     );
   }
 }
-
-export default DataLine;

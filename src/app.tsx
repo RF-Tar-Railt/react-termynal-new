@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactElement } from 'react';
-import DataLine from './dataline';
+import { DataLine } from './dataline';
 import "./styles/termynal.css";
 
 
@@ -27,7 +27,7 @@ type TermynalProps = {
 }
 
 
-class App extends React.Component {
+export class App extends React.Component {
   public id: string;
   public children: DataLine[];
   public cursor: string;
@@ -166,4 +166,3 @@ class App extends React.Component {
   }
 }
 
-export default App;
