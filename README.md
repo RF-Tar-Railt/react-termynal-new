@@ -12,13 +12,13 @@ npm install react-termynal-new
 
 ```jsx
 import React from 'react';
-import {App, DataLine} from 'react-termynal-new';
+import {App as Termynal, DataLine} from 'react-termynal-new';
 
 const App = () => {
   return (
-    <App>
+    <Termynal>
       <DataLine type="input" prompt=">>>">Hello World! </DataLine>
-    </App>
+    </Termynal>
   );
 };
 
