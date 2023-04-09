@@ -16,6 +16,8 @@ const defaultOptions = {
 
 type TermynalProps = {
   id?: string;
+  title?: string;
+  flex?: boolean;
   startDelay?: number;
   typeDelay?: number;
   lineDelay?: number;
@@ -29,6 +31,8 @@ type TermynalProps = {
 
 export class App extends React.Component {
   public id: string;
+  public title: string;
+  public flex: boolean;
   public children: DataLine[];
   public cursor: string;
   public fastVisible: 'visible' | 'hidden';
@@ -44,24 +48,29 @@ export class App extends React.Component {
   public progressPercent: number;
 
   private readonly lines: DataLine[];
-  /*
-  * react-termynal-new
-  *
-  * A React component for simulating a terminal session.
-  *
-  * @param {string} props.id - The id of the element to render the terminal in.
-  * @param {number} props.startDelay - The delay before the terminal starts typing.
-  * @param {number} props.typeDelay - The delay between each character typed in input line.
-  * @param {number} props.lineDelay - The delay between each line.
-  * @param {number} props.progressLength - The length of the progress bar.
-  * @param {string} props.progressChar - The character to use for the progress bar.
-  * @param {number} props.progressPercent - The percentage of the progress bar to fill.
-  * @param {string} props.cursor - The character to use for the cursor.
-  * @param {ReactElement[]} props.children - The lines to render in the terminal.
- */
+
+  /**
+   * react-termynal-new
+   *
+   * A React component for simulating a terminal session.
+   *
+   * @param {string} props.id - The id of the element to render the terminal in.
+   * @param {string} props.title - The title of the terminal.
+   * @param {boolean} props.flex - Whether to make height of terminal flexible.
+   * @param {number} props.startDelay - The delay before the terminal starts typing.
+   * @param {number} props.typeDelay - The delay between each character typed in input line.
+   * @param {number} props.lineDelay - The delay between each line.
+   * @param {number} props.progressLength - The length of the progress bar.
+   * @param {string} props.progressChar - The character to use for the progress bar.
+   * @param {number} props.progressPercent - The percentage of the progress bar to fill.
+   * @param {string} props.cursor - The character to use for the cursor.
+   * @param {ReactElement[]} props.children - The lines to render in the terminal.
+   */
   constructor(props: TermynalProps) {
     super(props);
     this.id = props.id || "termynal";
+    this.title = props.title || "bash";
+    this.flex = props.flex || false;
     this.originalStartDelay = this.startDelay = props.startDelay || defaultOptions.startDelay;
     this.originalTypeDelay = this.typeDelay = props.typeDelay || defaultOptions.typeDelay;
     this.originalLineDelay = this.lineDelay = props.lineDelay || defaultOptions.lineDelay;
@@ -79,14 +88,14 @@ export class App extends React.Component {
   render() {
     return (
       <React.StrictMode>
-        <div id={this.id} data-termynal="">
+        <div id={this.id} data-termynal="" data-termynal-title={this.title}>
           <a href='#'
              style={{visibility: this.fastVisible}}
              onClick={(e) => {
                e.preventDefault()
-               this.lineDelay = 0
-               this.typeDelay = 0
-               this.startDelay = 0
+               this.lineDelay = 1
+               this.typeDelay = 1
+               this.startDelay = 1
              }} data-terminal-control=''>fast →</a>
           {this.children.map((v) => v.render())}
           <a href='#'
@@ -102,10 +111,25 @@ export class App extends React.Component {
   }
 
   init() {
-    this.children = [];
+    if (this.flex) {
+      this.children = [];
+    } else {
+      this.children = this.lines.map((v) => {
+        v.visibility = 'hidden';
+        return v;
+      });
+    }
     this.fastVisible = 'visible';
     this.restartVisible = 'hidden';
     this.start();
+  }
+
+  enableLine(line: DataLine) {
+    if (this.flex) {
+      this.children.push(line);
+    } else {
+      line.visibility = 'visible';
+    }
   }
 
   async start() {
@@ -123,7 +147,7 @@ export class App extends React.Component {
         await this.progress(line);
         await this.wait(delay);
       } else {
-        this.children.push(line);
+        this.enableLine(line);
         await this.wait(delay);
         this.forceUpdate()
       }
@@ -146,7 +170,7 @@ export class App extends React.Component {
     const delay = line.data.typeDelay || this.typeDelay;
     let temp_value = line.data.value;
     line.data.value = '';
-    this.children.push(line);
+    this.enableLine(line);
     for (let char of chars) {
       await this.wait(delay);
       line.data.value += char;
@@ -162,7 +186,7 @@ export class App extends React.Component {
     const chars = progressChar.repeat(progressLength);
     const progressPercent = line.data.progressPercent || this.progressPercent;
     line.data.value = '';
-    this.children.push(line);
+    this.enableLine(line);
     for (let i = 1; i < chars.length + 1; i++) {
       await this.wait(this.typeDelay);
       const percent = Math.round(i / chars.length * 100);

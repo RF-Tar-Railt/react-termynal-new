@@ -8,18 +8,21 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App typeDelay={80} lineDelay={700}>
-      <DataLine type="input" prompt="▲">npm uninstall react</DataLine>
-      <DataLine>Are you sure you want to uninstall 'react'?</DataLine>
-      <DataLine type="input" typeDelay={1000} prompt="(y/n)">y</DataLine>
-      <DataLine type="progress" progressChar="."></DataLine>
-      <DataLine>Successfully uninstalled 'react'.</DataLine>
-      <DataLine type="input" prompt="▲">node</DataLine>
-      <DataLine type="input" prompt="▲">Array(5).fill('❤')</DataLine>
-      <DataLine>[ '❤', '❤', '❤', '❤', '❤' ]</DataLine>
-      <DataLine type="input" prompt="▲">cd ~/repos</DataLine>
-      <DataLine type="input" prompt="▲ ~/repos">git checkout branch main</DataLine>
-      <DataLine type="input" prompt="▲ ~/repos (main)">git commit -m "Fix things"</DataLine>
+    <App>
+      <DataLine type="input">pip install spacy</DataLine>
+      <DataLine type="progress"></DataLine>
+      <DataLine>SUCCESS: spacy-2.0.18-cp36-cp36m-win_amd64.whl is in your current directory.</DataLine>
+      <DataLine></DataLine>
+      <DataLine type="input">python -m spacy download en</DataLine>
+      <DataLine type="progress"></DataLine>
+      <DataLine>Installed en_core_web_sm-2.0.0</DataLine>
+      <DataLine></DataLine>
+      <DataLine type="input">python</DataLine>
+      <DataLine type="input" prompt=">>>">import spacy</DataLine>
+      <DataLine type="input" prompt=">>>">nlp = spacy.load('en')</DataLine>
+      <DataLine type="input" prompt=">>>">doc = nlp("Hello world!")</DataLine>
+      <DataLine type="input" prompt=">>>">print([(w.text, w.pos_) for w in doc])</DataLine>
+      <DataLine type="output">[('Hello', 'INTJ'), ('world', 'NOUN'), ('!', 'PUNCT')]</DataLine>
     </App>
     <h2>React Termynal</h2>
     <p>

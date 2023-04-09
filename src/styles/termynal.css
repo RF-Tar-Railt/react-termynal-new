@@ -22,7 +22,7 @@
     font-size: 15px;
     /* font-family: 'Fira Mono', Consolas, Menlo, Monaco, 'Courier New', Courier, monospace; */
     font-family: 'Roboto Mono', 'Fira Mono', Consolas, Menlo, Monaco, 'Courier New', Courier, monospace;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 75px 45px 35px;
     position: relative;
     -webkit-box-sizing: border-box;
@@ -44,8 +44,8 @@
             box-shadow: 25px 0 0 #f4c025, 50px 0 0 #3ec930;
 }
 
-[data-termynal]:after {
-    content: 'bash';
+[data-termynal][data-termynal-title]:after {
+    content: attr(data-termynal-title);
     position: absolute;
     color: var(--color-text-subtle);
     top: 5px;

@@ -29,9 +29,10 @@ type DataLineData = {
 
 export class DataLine extends React.Component {
   public cursor: string;
+  public visibility: "visible" | "hidden";
   public data: DataLineData;
 
-  /*
+  /**
    * DataLine is a wrapper around a span element that adds data-ty-* attributes
    * to the element. These attributes are used by the termynal library to
    * determine how to render the element.
@@ -48,6 +49,7 @@ export class DataLine extends React.Component {
    */
   constructor(props: DataLineProps) {
     super(props);
+    this.visibility = 'visible'
     this.cursor = props.cursor || '';
     this.data = {};
     this.data.type = props.type || '';
@@ -62,8 +64,7 @@ export class DataLine extends React.Component {
   }
 
   generate_attributes() {
-    let attrs = {
-    };
+    let attrs = {style: {visibility: this.visibility}};
     for (let prop of Object.keys(this.data)) {
         let value = this.data[prop];
         if (value === undefined || value === null) {
