@@ -28,14 +28,29 @@ type DataLineData = {
 
 
 export class DataLine extends React.Component {
-  public visibility: "visible" | "hidden";
+  public cursor: string;
   public data: DataLineData;
 
+  /*
+   * DataLine is a wrapper around a span element that adds data-ty-* attributes
+   * to the element. These attributes are used by the termynal library to
+   * determine how to render the element.
+   *
+   * @param {string} props.type - The type of the element. Can be 'input', 'progress', or '' as pure text line.
+   * @param {string} props.cursor - The character to use for the cursor.
+   * @param {string} props.value - The value of the element.
+   * @param {number} props.delay - The delay before the element is rendered.
+   * @param {number} props.typeDelay - The delay between each character typed in input line.
+   * @param {string} props.prompt - The prompt to use for input lines.
+   * @param {number} props.progressLength - The length of the progress bar.
+   * @param {string} props.progressChar - The character to use for the progress bar.
+   * @param {number} props.progressPercent - The percentage of the progress bar to fill.
+   */
   constructor(props: DataLineProps) {
     super(props);
-    this.visibility = 'visible'
+    this.cursor = props.cursor || '';
     this.data = {};
-    this.data.type = props.type;
+    this.data.type = props.type || '';
     this.data.cursor = props.cursor;
     this.data.value = props.value || props.children || '';
     this.data.delay = props.delay;
@@ -47,7 +62,8 @@ export class DataLine extends React.Component {
   }
 
   generate_attributes() {
-    let attrs = {style: {visibility: this.visibility}};
+    let attrs = {
+    };
     for (let prop of Object.keys(this.data)) {
         let value = this.data[prop];
         if (value === undefined || value === null) {
